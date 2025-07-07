@@ -688,6 +688,12 @@ export class MultiSelect implements OnInit, AfterViewInit, AfterContentInit, Aft
     }
 
     writeValue(value: any): void {
+        // 🩹 Als opties een array van strings zijn, converteer naar label/value paren
+        if (value && Array.isArray(value) && this.options && this.options.length > 0 && typeof this.options[0] === 'string') {
+            this.options = (this.options as string[]).map((v) => ({ label: v, value: v }));
+            console.warn('[PrimeNG Patch] Converted options from string[] to label/value[] in MultiSelect');
+        }
+
         this.value = value;
         this.updateLabel();
         this.updateFilledState();
